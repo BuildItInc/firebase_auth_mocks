@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_mocks/src/mock_id_token_result.dart';
 import 'package:firebase_auth_mocks/src/mock_user_credential.dart';
 
 class MockUser with EquatableMixin implements User {
@@ -13,6 +14,7 @@ class MockUser with EquatableMixin implements User {
   final List<UserInfo> _providerData;
   final String? _refreshToken;
   final UserMetadata? _metadata;
+  final Map<String, dynamic>? _customClaims;
 
   MockUser({
     bool isAnonymous = false,
@@ -25,6 +27,7 @@ class MockUser with EquatableMixin implements User {
     List<UserInfo>? providerData,
     String? refreshToken,
     UserMetadata? metadata,
+    Map<String, dynamic>? customClaims,
   })  : _isAnonymous = isAnonymous,
         _isEmailVerified = isEmailVerified,
         _uid = uid,
@@ -34,7 +37,8 @@ class MockUser with EquatableMixin implements User {
         _photoURL = photoURL,
         _providerData = providerData ?? [],
         _refreshToken = refreshToken,
-        _metadata = metadata;
+        _metadata = metadata,
+        _customClaims = customClaims;
 
   FirebaseAuthException? _exception;
 
@@ -135,6 +139,11 @@ class MockUser with EquatableMixin implements User {
 
       throw (exceptionCopy);
     }
+  }
+
+  @override
+  Future<IdTokenResult> getIdTokenResult([bool forceRefresh = false]) async {
+    return MockIdTokenResult({'claims': _customClaims});
   }
 
   @override
