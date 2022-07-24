@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:meta/meta.dart';
 
 import '../firebase_auth_mocks.dart';
@@ -110,7 +111,8 @@ class MockFirebaseAuth implements FirebaseAuth {
 
   @override
   Future<void> verifyPhoneNumber({
-    required String phoneNumber,
+    String? phoneNumber,
+    PhoneMultiFactorInfo? multiFactorInfo,
     required PhoneVerificationCompleted verificationCompleted,
     required PhoneVerificationFailed verificationFailed,
     required PhoneCodeSent codeSent,
@@ -118,6 +120,7 @@ class MockFirebaseAuth implements FirebaseAuth {
     @visibleForTesting String? autoRetrievedSmsCodeForTesting,
     Duration timeout = const Duration(seconds: 30),
     int? forceResendingToken,
+    MultiFactorSession? multiFactorSession,
   }) async {
     codeSent('id', 0);
   }
